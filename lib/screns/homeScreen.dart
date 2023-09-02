@@ -39,7 +39,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text("Home Page"),
+        ),
         floatingActionButton: FloatingActionButton(onPressed: (){
           push(context: context, screen: AddUser());
         },child:const Icon(Icons.add,color: Colors.white,),backgroundColor: Colors.teal),

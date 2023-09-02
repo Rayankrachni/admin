@@ -82,14 +82,14 @@ class _EditUserState extends State<EditUser> {
                   )),
               CustomTextFormField(controller: telephone, hintText: "telephone", prefixIcon: Icons.phone, textInputType: TextInputType.phone),
               SizedBox(height:10,) ,
-              const Align(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
-                    child: Text("Device Id",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
-                  )),
-              CustomTextFormField(controller: deviceId, hintText: "device", prefixIcon: Icons.mobile_friendly_rounded, textInputType: TextInputType.text),
-              SizedBox(height: 10,) ,
+                /* const Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
+                      child: Text("Device Id",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
+                    )),
+                CustomTextFormField(controller: deviceId, hintText: "device", prefixIcon: Icons.mobile_friendly_rounded, textInputType: TextInputType.text),
+                SizedBox(height: 10,) ,*/
 
               const Align(
                   alignment: Alignment.topLeft,

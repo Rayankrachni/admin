@@ -3,9 +3,11 @@
 import 'dart:convert';
 
 import 'package:adminapplication/helper/app_nav.dart';
+import 'package:adminapplication/helper/app_toast.dart';
 import 'package:adminapplication/model/user_model.dart';
 import 'package:adminapplication/screns/homeScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,14 +25,16 @@ class UserProvider extends ChangeNotifier{
         'email': model.email,
         'phone': model.phone,
         'amount': model.amount,
-        'deviceToken': model.deviceToken,
+        'deviceToken': "0000",
       });
       await docRef.update({'id': docRef.id});
       print('Data stored successfully.');
+      ToastHelper.showToast(msg: "Data stored successfully", backgroundColor: Colors.green);
 
       pushAndRemove(context: context, screen: HomePage());
     } catch (e) {
       print('Error storing data: $e');
+      ToastHelper.showToast(msg: "Some thing went wrong, try again", backgroundColor: Colors.red);
     }
   }
 
@@ -50,11 +54,12 @@ class UserProvider extends ChangeNotifier{
           }
       );
       print('Data stored successfully.');
-
+      ToastHelper.showToast(msg: "Data Saved", backgroundColor: Colors.green);
       sendNotificationToUser(model.deviceToken,"titele","send to");
 
       pushAndRemove(context: context, screen: HomePage());
     } catch (e) {
+      ToastHelper.showToast(msg: "Some thing went wrong, try again", backgroundColor: Colors.red);
       print('Error storing data: $e');
     }
   }
@@ -107,6 +112,7 @@ class UserProvider extends ChangeNotifier{
     );
 
     if (response.statusCode == 200) {
+      ToastHelper.showToast(msg: "Notification has been sent", backgroundColor: Colors.green);
       print('Notification sent successfully.');
     } else {
       print('Failed to send notification: ${response.statusCode}');

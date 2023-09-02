@@ -31,7 +31,7 @@ class CustomTextFormField extends StatelessWidget {
 
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Toast.empty-field';
+          return 'This field is required';
         }
         return null;
       },
