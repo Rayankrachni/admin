@@ -1,0 +1,21 @@
+
+
+{
+  "Login": "Admin Login Page",
+  "splash": "Splash Screen",
+  "code-verification": "Otp Code Verification",
+  "Home": "Home Page",
+  "first-name": "First Name",
+  "second-name": "Last Nmae",
+  "email": "Email",
+  "user-list": "Users List",
+  "phone": "Phone Number",
+  "amount": "Amount",
+  "save": "Save",
+  "login-btn": "Login",
+  "add": "Add",
+  "add-title": "Add New User",
+  "select-code": "Select your code country",
+  "edit-title": "Edit User Information"
+
+}

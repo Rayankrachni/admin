@@ -4,6 +4,7 @@ import 'package:adminapplication/helper/app_nav.dart';
 import 'package:adminapplication/model/user_model.dart';
 import 'package:adminapplication/screns/addUser.dart';
 import 'package:adminapplication/screns/editUser.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -41,7 +42,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text("Home Page"),
+          title:  Text('Home'.tr()),
+          leading: IconButton(onPressed: (){EasyLocalization.of(context)!.setLocale(const Locale('ar', 'DZ'));},icon: Icon(Icons.language),),
         ),
         floatingActionButton: FloatingActionButton(onPressed: (){
           push(context: context, screen: AddUser());
@@ -54,7 +56,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(15.0),
-                child: Text("Users List",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 22),),
+                child: Text('user-list'.tr(),style: TextStyle(fontWeight: FontWeight.w700,fontSize: 22),),
               ),
 
               Expanded(
@@ -70,9 +72,9 @@ class _HomePageState extends State<HomePage> {
                               )
                           ),
                           child: ListTile(
-                            subtitle: Text("Item ${users[index].lastname}",style: TextStyle(fontWeight: FontWeight.normal,color: Colors.grey,fontSize: 12),),
+                            subtitle: Text(" ${users[index].lastname}",style: TextStyle(fontWeight: FontWeight.normal,color: Colors.grey,fontSize: 12),),
 
-                            title: Text("Item ${users[index].firstname}",style: TextStyle(fontWeight: FontWeight.w600),),
+                            title: Text(" ${users[index].firstname}",style: TextStyle(fontWeight: FontWeight.w500),),
                             leading: Icon(CupertinoIcons.person,color: Colors.teal,),
                             trailing: IconButton(onPressed: (){
                               push(context: context, screen: EditUser(user:users[index] ,));

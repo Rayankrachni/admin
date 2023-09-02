@@ -5,8 +5,10 @@ import 'dart:convert';
 import 'package:adminapplication/helper/app_nav.dart';
 import 'package:adminapplication/helper/app_toast.dart';
 import 'package:adminapplication/model/user_model.dart';
+import 'package:adminapplication/screns/OtpScreen.dart';
 import 'package:adminapplication/screns/homeScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -14,7 +16,7 @@ import 'package:flutter/cupertino.dart';
 
 class UserProvider extends ChangeNotifier{
 
-
+  FirebaseAuth auth = FirebaseAuth.instance;
   void storeData(UserModel model,BuildContext context) async {
     try {
       DocumentReference docRef = await FirebaseFirestore.instance.collection('users').add({
@@ -38,7 +40,6 @@ class UserProvider extends ChangeNotifier{
     }
   }
 
-
   void editUser(UserModel model,BuildContext context) async {
     try {
       await FirebaseFirestore.instance.collection('users').doc(model.id).set(
@@ -55,7 +56,7 @@ class UserProvider extends ChangeNotifier{
       );
       print('Data stored successfully.');
       ToastHelper.showToast(msg: "Data Saved", backgroundColor: Colors.green);
-      sendNotificationToUser(model.deviceToken,"titele","send to");
+      sendNotificationToUser(model.deviceToken,"Amount Updated","Your amount has been Updated to ${model.amount}");
 
       pushAndRemove(context: context, screen: HomePage());
     } catch (e) {
@@ -63,7 +64,6 @@ class UserProvider extends ChangeNotifier{
       print('Error storing data: $e');
     }
   }
-
 
   Future<List<UserModel>> fetchUsers() async {
     try {
@@ -85,8 +85,6 @@ class UserProvider extends ChangeNotifier{
       return [];
     }
   }
-
-
 
   Future<void> sendNotificationToUser(String userDeviceToken, String title, String body) async {
     final serverKey = 'AAAAKvXxIUQ:APA91bFR5sp9c9a7-mylQIbPVor9ld9Ibln_NiRnCg1yHQILtQpwMKJiI29PsJCgVUfVoa8foH-ug8nt-UU-GxXefl7GmxQZ4YBMJgA6QES_6dmqgsi2IA5vmzLg9xti3q-bK6UPtD28';
@@ -118,6 +116,7 @@ class UserProvider extends ChangeNotifier{
       print('Failed to send notification: ${response.statusCode}');
     }
   }
+
   Future<bool> isDataStored(UserModel model) async {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -141,7 +140,51 @@ class UserProvider extends ChangeNotifier{
   }
 
 
+  Future<void> loginUser(String phone, BuildContext context) async {
 
+    try{
+
+      await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: phone,
+
+        timeout: Duration(seconds: 120),
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          // ANDROID ONLY!
+          print("-----sms completed out -----");
+          // Sign the user in (or link) with the auto-generated credential
+          await auth.signInWithCredential(credential);
+
+          ToastHelper.showToast(msg: "Login Successfully ", backgroundColor: Colors.green);
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          if (e.code == 'invalid-phone-number') {
+            print('The provided phone number is not valid.');
+
+            ToastHelper.showToast(msg: "The provided phone number is not valid", backgroundColor: Colors.red);
+          }
+          else{print("+++++++++${e.code}");}
+
+          // Handle other errors
+        },
+
+
+        codeSent: (String verificationId, int? resendToken) async {
+          // Update the UI - wait for the user to enter the SMS code
+
+          push(context: context, screen: OtpScreen(verificationid: verificationId));
+
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {
+          // Auto-resolution timed out...
+          ToastHelper.showToast(msg: "Time out, check your connection", backgroundColor: Colors.red);
+
+          print("-----time out -----");
+        },
+      );}catch(e){
+      print("-----------------$e");
+    }
+
+  }
 
 
 

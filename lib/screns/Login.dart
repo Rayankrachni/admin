@@ -1,6 +1,10 @@
 
+import 'package:adminapplication/controller/user_provider.dart';
+import 'package:adminapplication/helper/app_nav.dart';
+import 'package:adminapplication/helper/app_size.dart';
 import 'package:adminapplication/helper/app_toast.dart';
 import 'package:adminapplication/model/user_model.dart';
+import 'package:adminapplication/screns/homeScreen.dart';
 import 'package:adminapplication/widget/button_widget.dart';
 import 'package:adminapplication/widget/textFormField.dart';
 import 'package:country_code_picker/country_code_picker.dart';
@@ -8,35 +12,29 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../controller/user_provider.dart';
 
-class AddUser extends StatefulWidget {
-  const AddUser({super.key});
+
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<AddUser> createState() => _AddUserState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _AddUserState extends State<AddUser> {
-  TextEditingController email=TextEditingController();
-  TextEditingController password=TextEditingController();
-  TextEditingController firstname=TextEditingController();
-  TextEditingController lastname=TextEditingController();
+class _LoginScreenState extends State<LoginScreen> {
   TextEditingController telephone=TextEditingController();
-  TextEditingController deviceId=TextEditingController();
-  TextEditingController amount=TextEditingController();
 
   String? codePhone;
   final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
 
     final UserProvider provider=Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         centerTitle: true,
-        title:   Text('add-title'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 22),),
+        title: Text('add-title'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 22),),
 
       ),
       body: Padding(
@@ -46,40 +44,26 @@ class _AddUserState extends State<AddUser> {
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
-                  child: Text('first-name'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
-                ),
-                CustomTextFormField(controller: firstname, hintText: 'first-name'.tr(), prefixIcon: Icons.person, textInputType: TextInputType.text),
 
-                SizedBox(height: 20,) ,
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
-                  child: Text('second-name'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
-                ),
-                CustomTextFormField(controller: lastname, hintText:'second-name'.tr(), prefixIcon: Icons.person, textInputType: TextInputType.text),
-                SizedBox(height: 10,) ,
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
-                  child: Text('email'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
-                ),
-                CustomTextFormField(controller: email, hintText: 'email'.tr(), prefixIcon: Icons.email, textInputType: TextInputType.emailAddress),
-                SizedBox(height: 10,) ,
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
-                  child: Text('phone'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
-                ),
-                Container(
+
+                 Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
+                      child: Text('phone'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
+                    )),
+               Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       border: Border.all(
-                        color:  Colors.blueAccent,
+                        color:  Colors.teal,
 
                       )
                   ),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
 
                       CountryCodePicker(
@@ -88,9 +72,10 @@ class _AddUserState extends State<AddUser> {
                             codePhone=v.toString();
                           });
                           print("my value is $v");
-                         
+
                         },
                         showFlag: true,
+                        flagWidth: 20,
 
 
                         // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
@@ -104,7 +89,7 @@ class _AddUserState extends State<AddUser> {
                             "on init ${code!.name!} ${code.dialCode} ${code.name}"),
                       ),
                       SizedBox(
-                        width: 200,
+                        width: AppSize.width*0.5,
                         child: TextFormField(
                           controller: telephone,
 
@@ -119,7 +104,7 @@ class _AddUserState extends State<AddUser> {
 
                           style:const TextStyle(color: Colors.black),
                           decoration: InputDecoration(
-                              hintText:'phone'.tr(),
+                              hintText: 'phone'.tr(),
 
                               contentPadding: const EdgeInsets.symmetric(
                                 vertical: 5.0,
@@ -151,39 +136,26 @@ class _AddUserState extends State<AddUser> {
                     ],
                   ),
                 ),
-               SizedBox(height: 10,) ,
-               /* const Align(
-                    alignment: Alignment.topLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
-                      child: Text("Device Id",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
-                    )),
-                CustomTextFormField(controller: deviceId, hintText: "device", prefixIcon: Icons.mobile_friendly_rounded, textInputType: TextInputType.text),
-                SizedBox(height: 10,) ,*/
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
-                  child: Text('amount'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
-                ),
-                CustomTextFormField(controller: amount, hintText: 'amount'.tr(), prefixIcon: Icons.monetization_on, textInputType: TextInputType.number),
-                SizedBox(height: 20,) ,
+
 
 
                 SizedBox(height: 20,) ,
                 DefaultButton(
                     onPressed: (){
-
                       if(_formKey.currentState!.validate() && codePhone!=null)
                       {
                         String phone=codePhone!+telephone.text;
 
-                        print("codePhone $codePhone");
-                        provider.storeData( UserModel(id: "", email: email.text, firstname: firstname.text, deviceToken:deviceId.text, lastname: lastname.text, phone:phone, amount: amount.text),context);
+                        print("phone code $phone");
+
+
+                         provider.loginUser( phone,context);
 
                       }
                       if(codePhone==null){
-                        ToastHelper.showToast(msg: 'select-code'.tr(), backgroundColor: Colors.red);
+                        ToastHelper.showToast(msg: "Select your code country", backgroundColor: Colors.red);
                       }
-                    }, text: 'add'.tr())
+                    }, text: 'login-btn'.tr())
               ],
             ),
           ),
