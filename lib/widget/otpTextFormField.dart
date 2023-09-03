@@ -56,7 +56,7 @@ class CustomOtpTextFormField extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide(
               width: 1,
-              color: Colors.teal,
+              color: Color(0xff701B45),
             ),
           ),
           errorBorder:const OutlineInputBorder(

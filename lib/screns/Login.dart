@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: Text('add-title'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 22),),
+        title: Text('Login'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 22),),
 
       ),
       body: Padding(
@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       border: Border.all(
-                        color:  Colors.teal,
+                        color:  Color(0xff701B45),
 
                       )
                   ),
@@ -144,6 +144,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: (){
                       if(_formKey.currentState!.validate() && codePhone!=null)
                       {
+                        provider.islogin=true;
+
+                        print("islogin ${provider.islogin}");
                         String phone=codePhone!+telephone.text;
 
                         print("phone code $phone");
@@ -155,7 +158,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       if(codePhone==null){
                         ToastHelper.showToast(msg: "Select your code country", backgroundColor: Colors.red);
                       }
-                    }, text: 'login-btn'.tr())
+                    }, text:'login-btn'.tr() ,disable: !provider.islogin,
+                )
               ],
             ),
           ),

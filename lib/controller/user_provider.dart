@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:adminapplication/helper/app_nav.dart';
 import 'package:adminapplication/helper/app_toast.dart';
 import 'package:adminapplication/model/user_model.dart';
+import 'package:adminapplication/screns/Login.dart';
 import 'package:adminapplication/screns/OtpScreen.dart';
 import 'package:adminapplication/screns/homeScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -42,18 +43,16 @@ class UserProvider extends ChangeNotifier{
 
   void editUser(UserModel model,BuildContext context) async {
     try {
-      await FirebaseFirestore.instance.collection('users').doc(model.id).set(
-          {
 
-            "id":model.id,
-            'firstname': model.firstname,
-            'lastname': model.lastname,
-            'email': model.email,
-            'phone': model.phone,
-            'amount': model.amount,
-            'deviceToken': model.deviceToken,
-          }
-      );
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(model.id)
+          .update({   'firstname': model.firstname,
+        'lastname': model.lastname,
+        'email': model.email,
+        'phone': model.phone,
+        'amount': model.amount,});
+
       print('Data stored successfully.');
       ToastHelper.showToast(msg: "Data Saved", backgroundColor: Colors.green);
       sendNotificationToUser(model.deviceToken,"Amount Updated","Your amount has been Updated to ${model.amount}");
@@ -158,6 +157,7 @@ class UserProvider extends ChangeNotifier{
         },
         verificationFailed: (FirebaseAuthException e) {
           if (e.code == 'invalid-phone-number') {
+
             print('The provided phone number is not valid.');
 
             ToastHelper.showToast(msg: "The provided phone number is not valid", backgroundColor: Colors.red);
@@ -170,7 +170,7 @@ class UserProvider extends ChangeNotifier{
 
         codeSent: (String verificationId, int? resendToken) async {
           // Update the UI - wait for the user to enter the SMS code
-
+          islogin=false;
           push(context: context, screen: OtpScreen(verificationid: verificationId));
 
         },
@@ -187,8 +187,39 @@ class UserProvider extends ChangeNotifier{
   }
 
 
+  bool _isRtl=false;
+  set isRTL(bool val)
+  {
+
+    _isRtl=val;
+  }
+
+  bool get  isRtl =>_isRtl;
 
 
+  bool _islogin=false;
+  set islogin(bool val)
+  {
+
+    _islogin=val;
+    notifyListeners();
+  }
+
+  bool get  islogin =>_islogin;
+
+
+
+
+  Future<void> signOut(BuildContext context) async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      pushAndRemove(context: context, screen: LoginScreen());
+      // Sign-out successful.
+    } catch (e) {
+      // An error occurred while signing out.
+      print("Error signing out: $e");
+    }
+  }
 
 
 

@@ -38,10 +38,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal,
+      backgroundColor: Color(0xff701B45),
       body: Center(
 
-        child: const Text("Admin App",style: TextStyle(color: Colors.white,fontSize: 20),),
+        child: Image.asset("assets/images/fca-logo.jpg")
       ),
     );
   }

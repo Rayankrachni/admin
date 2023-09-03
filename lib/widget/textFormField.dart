@@ -50,7 +50,7 @@ class CustomTextFormField extends StatelessWidget {
         ),
         prefixIcon: Icon(
           prefixIcon,
-          color:  Colors.blueAccent,
+          color:  Color(0xff701B45),
           size: 20,
         ),
         hintStyle: const TextStyle(
@@ -65,7 +65,7 @@ class CustomTextFormField extends StatelessWidget {
           onTap: onTapSuffix,
           child: Icon(
             suffixIcon,
-            color:  Colors.blueAccent,
+            color:  Color(0xff701B45),
             size: 20,
           ),
         )
@@ -74,7 +74,7 @@ class CustomTextFormField extends StatelessWidget {
           borderRadius:BorderRadius.all(Radius.circular(20)),
           borderSide: BorderSide(
             width: 1,
-            color:  Colors.blueAccent,
+            color:  Color(0xff701B45),
           ),
         ),
         focusedErrorBorder:const OutlineInputBorder(
@@ -88,7 +88,7 @@ class CustomTextFormField extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(20)),
           borderSide: BorderSide(
             width: 1,
-            color:  Colors.blueAccent,
+            color: Color(0xff701B45),
           ),
         ),
         errorBorder:const OutlineInputBorder(

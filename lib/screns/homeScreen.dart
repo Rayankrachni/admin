@@ -43,6 +43,10 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           centerTitle: true,
           title:  Text('Home'.tr()),
+          actions: [
+             IconButton(onPressed: (){userProvider.signOut(context);},icon: Icon(Icons.login),),
+
+          ],
           leading: IconButton(onPressed: (){EasyLocalization.of(context)!.setLocale(const Locale('ar', 'DZ'));},icon: Icon(Icons.language),),
         ),
         floatingActionButton: FloatingActionButton(onPressed: (){
@@ -86,7 +90,7 @@ class _HomePageState extends State<HomePage> {
 
             ],
           ),
-        ):Center(child: CircleAvatar(backgroundColor: Colors.teal,))
+        ):Center(child:CircularProgressIndicator(),)
     );
   }
 }
