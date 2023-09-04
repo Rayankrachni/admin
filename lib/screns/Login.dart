@@ -24,7 +24,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController telephone=TextEditingController();
 
-  String? codePhone;
+  String codePhone="+1";
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -70,7 +70,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           setState(() {
                             codePhone=v.toString();
                           });
-                          print("my value is $v");
 
                         },
                         showFlag: true,
@@ -78,8 +77,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
 
                         // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-                        initialSelection: 'Fr',
-                        favorite: const ['+39', 'FR'],
+                        initialSelection: 'US',
+                        favorite: const ['+1', 'US'],
                         countryFilter: const ['IT','US','USA' ,'FR','CD', 'CG', 'KE', 'UG','zh','vi','uz','ur','uk','tt','tr','tk','th','tg','ta','sv','sr','sk','sd','sq','so','sl','sd','ru','ro','pt','ps','pl','no','nn','nl','nb','ms','mn','ml','ml','lv','lt','ky','ku','ko','km','kk','ka','ja','it','is','id','hy','hu','hr','hi','he','ha','gl','fi','fa','et','es','en','el','de','cs','ca','dz','bs','bn','bg','be','az','ar','am','af'],
                         showFlagDialog: false,
                         comparator: (a, b) => b.name!.compareTo(a.name!),
@@ -91,6 +90,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         width: AppSize.width*0.5,
                         child: TextFormField(
                           controller: telephone,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'required'.tr();
+                            }
+                            return null;
+                          },
 
                           keyboardType: TextInputType.phone,
                           textInputAction: TextInputAction.next,
@@ -121,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
 
                               errorBorder:UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.red)
+                                  borderSide: BorderSide(color: Colors.transparent)
                               )
                           ),
                         ),
@@ -135,22 +140,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(height: 20,) ,
                 DefaultButton(
                     onPressed: (){
-                      if(_formKey.currentState!.validate() && codePhone!=null)
+                      if(_formKey.currentState!.validate() )
                       {
                         provider.islogin=true;
 
-                        print("islogin ${provider.islogin}");
-                        String phone=codePhone!+telephone.text;
+                        String phone=codePhone+telephone.text;
 
-                        print("phone code $phone");
 
 
                          provider.loginUser( phone,context);
 
                       }
-                      if(codePhone==null){
-                        ToastHelper.showToast(msg: "select-code", backgroundColor: Colors.red);
-                      }
+
                     }, text:'login-btn'.tr() ,disable: !provider.islogin,
                 )
               ],

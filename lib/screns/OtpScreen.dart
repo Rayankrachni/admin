@@ -40,11 +40,9 @@ class OtpScreen extends StatelessWidget {
               child: DefaultButton(onPressed: () async{
                 FirebaseAuth auth = FirebaseAuth.instance;
                 String smsCode = c1.text;
-                print("code verification is $smsCode");
 
                 // Create a PhoneAuthCredential with the code
                 PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationid, smsCode: smsCode);
-                print("-----sms sent out -----");
                 // Sign the user in (or link) with the credential
                 await auth.signInWithCredential(credential);
 

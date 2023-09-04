@@ -24,7 +24,7 @@ class UserProvider extends ChangeNotifier{
     try {
       DocumentReference docRef = await FirebaseFirestore.instance.collection('users').add({
 
-        "id":"12",
+        "id":"id",
         'firstname': model.firstname,
         'lastname': model.lastname,
         'email': model.email,
@@ -33,12 +33,11 @@ class UserProvider extends ChangeNotifier{
         'deviceToken': "0000",
       });
       await docRef.update({'id': docRef.id});
-      print('Data stored successfully.');
 
       pushAndRemove(context: context, screen: HomePage());
     } catch (e) {
       print('Error storing data: $e');
-      ToastHelper.showToast(msg: "Some thing went wrong, try again", backgroundColor: Colors.red);
+      ToastHelper.showToast(msg:'some-wrong'.tr(), backgroundColor: Colors.red);
 
       islogin=false;
       notifyListeners();
@@ -57,13 +56,12 @@ class UserProvider extends ChangeNotifier{
         'phone': model.phone,
         'amount': model.amount,});
 
-      print('Data stored successfully.');
-      ToastHelper.showToast(msg: "Data Saved", backgroundColor: Colors.green);
+      ToastHelper.showToast(msg: 'dataSaved'.tr(), backgroundColor: Colors.green);
       sendNotificationToUser(model.deviceToken,"Amount Updated","Your amount has been Updated to ${model.amount}");
 
       pushAndRemove(context: context, screen: HomePage());
     } catch (e) {
-      ToastHelper.showToast(msg: "Some thing went wrong, try again", backgroundColor: Colors.red);
+      ToastHelper.showToast(msg: 'some-wrong'.tr(), backgroundColor: Colors.red);
       print('Error storing data: $e');
     }
   }
@@ -101,7 +99,7 @@ class UserProvider extends ChangeNotifier{
   }
 
   Future<void> sendNotificationToUser(String userDeviceToken, String title, String body) async {
-    final serverKey = 'AAAAKvXxIUQ:APA91bFR5sp9c9a7-mylQIbPVor9ld9Ibln_NiRnCg1yHQILtQpwMKJiI29PsJCgVUfVoa8foH-ug8nt-UU-GxXefl7GmxQZ4YBMJgA6QES_6dmqgsi2IA5vmzLg9xti3q-bK6UPtD28';
+    final serverKey = 'AAAAw_cXJx4:APA91bH5W4n1zlcCbcI-W2M4_ZXhJkc2tNn9_S2ni2R7V5Iaw3yACxIgmOJVdFrFZ1a42a8UYfFsFaExcskuua86ob3Jd131HMEbE7DgcHdU-9j5BzK2KOTNS5p8T54q05El600defgz';
     final url = 'https://fcm.googleapis.com/fcm/send';
 
     final headers = {
@@ -144,7 +142,6 @@ class UserProvider extends ChangeNotifier{
           .get();
 
 
-      print("-----data------${querySnapshot.docs.isNotEmpty}");
 
       return querySnapshot.docs.isNotEmpty;
     } catch (e) {
@@ -164,7 +161,6 @@ class UserProvider extends ChangeNotifier{
         timeout: Duration(seconds: 120),
         verificationCompleted: (PhoneAuthCredential credential) async {
           // ANDROID ONLY!
-          print("-----sms completed out -----");
           // Sign the user in (or link) with the auto-generated credential
           await auth.signInWithCredential(credential);
 
@@ -175,7 +171,6 @@ class UserProvider extends ChangeNotifier{
         verificationFailed: (FirebaseAuthException e) {
           if (e.code == 'invalid-phone-number') {
 
-            print('The provided phone number is not valid.');
             islogin=false;
             notifyListeners();
             ToastHelper.showToast(msg: 'phone-n-valid'.tr(), backgroundColor: Colors.red);
@@ -200,7 +195,6 @@ class UserProvider extends ChangeNotifier{
           // Auto-resolution timed out...
           islogin=false;
           notifyListeners();
-          print("-----time out -----");
         },
       );}catch(e){
       islogin=false;
@@ -216,6 +210,7 @@ class UserProvider extends ChangeNotifier{
   {
 
     _isRtl=val;
+    notifyListeners();
   }
 
   bool get  isRtl =>_isRtl;

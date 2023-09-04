@@ -6,7 +6,7 @@
   "code-verification": "Otp Code Verification",
   "Home": "Home Page",
   "first-name": "First Name",
-  "second-name": "Last Nmae",
+  "second-name": "Last Name",
   "email": "Email",
   "user-list": "Users List",
   "phone": "Phone Number",
@@ -21,7 +21,10 @@
   "phone-n-valid": "The provided phone number is not valid",
   "invalid-infor": "Invalid User Information",
   "otp-code": "Otp Code",
-  "notification": "Notification has been sent"
+  "notification": "Notification has been sent",
+  "dataSaved": "Data Saved",
+  "required": "Required",
+  "no-user":"No users are Existed"
 
 
 }

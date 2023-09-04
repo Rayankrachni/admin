@@ -26,7 +26,7 @@ class _AddUserState extends State<AddUser> {
   TextEditingController deviceId=TextEditingController();
   TextEditingController amount=TextEditingController();
 
-  String? codePhone;
+  String codePhone="+1";
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -87,15 +87,14 @@ class _AddUserState extends State<AddUser> {
                           setState(() {
                             codePhone=v.toString();
                           });
-                          print("my value is $v");
                          
                         },
                         showFlag: true,
 
 
                         // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-                        initialSelection: 'Fr',
-                        favorite: const ['+39', 'FR'],
+                        initialSelection: 'US',
+                        favorite: const ['+1', 'US'],
                         countryFilter: const ['IT', 'US','USA','FR','CD', 'CG', 'KE', 'UG','zh','vi','uz','ur','uk','tt','tr','tk','th','tg','ta','sv','sr','sk','sd','sq','so','sl','sd','ru','ro','pt','ps','pl','no','nn','nl','nb','ms','mn','ml','ml','lv','lt','ky','ku','ko','km','kk','ka','ja','it','is','id','hy','hu','hr','hi','he','ha','gl','fi','fa','et','es','en','el','de','cs','ca','dz','bs','bn','bg','be','az','ar','am','af'],
                         showFlagDialog: false,
                         comparator: (a, b) => b.name!.compareTo(a.name!),
@@ -108,12 +107,7 @@ class _AddUserState extends State<AddUser> {
                         child: TextFormField(
                           controller: telephone,
 
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Select your code country';
-                            }
-                            return null;
-                          },
+
                           keyboardType: TextInputType.phone,
                           textInputAction: TextInputAction.next,
 
@@ -172,11 +166,10 @@ class _AddUserState extends State<AddUser> {
                 DefaultButton(
                     onPressed: (){
 
-                      if(_formKey.currentState!.validate() && codePhone!=null)
+                      if(_formKey.currentState!.validate() )
                       {
-                        String phone=codePhone!+telephone.text;
+                        String phone=codePhone+telephone.text;
 
-                        print("codePhone $codePhone");
                         provider.storeData( UserModel(id: "", email: email.text, firstname: firstname.text, deviceToken:deviceId.text, lastname: lastname.text, phone:phone, amount: amount.text),context);
 
                       }

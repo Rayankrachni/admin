@@ -1,4 +1,4 @@
-package com.example.adminapplication
+package com.symloop.fcaukadmin
 
 import io.flutter.embedding.android.FlutterActivity
 
