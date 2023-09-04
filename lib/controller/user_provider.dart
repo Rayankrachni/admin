@@ -3,12 +3,14 @@
 import 'dart:convert';
 
 import 'package:adminapplication/helper/app_nav.dart';
+import 'package:adminapplication/helper/app_shared.dart';
 import 'package:adminapplication/helper/app_toast.dart';
 import 'package:adminapplication/model/user_model.dart';
 import 'package:adminapplication/screns/Login.dart';
 import 'package:adminapplication/screns/OtpScreen.dart';
 import 'package:adminapplication/screns/homeScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -32,12 +34,14 @@ class UserProvider extends ChangeNotifier{
       });
       await docRef.update({'id': docRef.id});
       print('Data stored successfully.');
-      ToastHelper.showToast(msg: "Data stored successfully", backgroundColor: Colors.green);
 
       pushAndRemove(context: context, screen: HomePage());
     } catch (e) {
       print('Error storing data: $e');
       ToastHelper.showToast(msg: "Some thing went wrong, try again", backgroundColor: Colors.red);
+
+      islogin=false;
+      notifyListeners();
     }
   }
 
@@ -62,6 +66,17 @@ class UserProvider extends ChangeNotifier{
       ToastHelper.showToast(msg: "Some thing went wrong, try again", backgroundColor: Colors.red);
       print('Error storing data: $e');
     }
+  }
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllUsersStream() {
+    // Reference to the "users" collection in Firestore
+    CollectionReference<Map<String, dynamic>> usersCollection =
+    FirebaseFirestore.instance.collection('users');
+
+    // Create a stream that listens to changes in the "users" collection
+    Stream<QuerySnapshot<Map<String, dynamic>>> usersStream =
+    usersCollection.snapshots();
+
+    return usersStream;
   }
 
   Future<List<UserModel>> fetchUsers() async {
@@ -109,7 +124,7 @@ class UserProvider extends ChangeNotifier{
     );
 
     if (response.statusCode == 200) {
-      ToastHelper.showToast(msg: "Notification has been sent", backgroundColor: Colors.green);
+      ToastHelper.showToast(msg: 'notification'.tr(), backgroundColor: Colors.green);
       print('Notification sent successfully.');
     } else {
       print('Failed to send notification: ${response.statusCode}');
@@ -153,16 +168,22 @@ class UserProvider extends ChangeNotifier{
           // Sign the user in (or link) with the auto-generated credential
           await auth.signInWithCredential(credential);
 
-          ToastHelper.showToast(msg: "Login Successfully ", backgroundColor: Colors.green);
+          SharedPreferencesHelper.setBool("login", true);
+          islogin=false;
+          notifyListeners();
         },
         verificationFailed: (FirebaseAuthException e) {
           if (e.code == 'invalid-phone-number') {
 
             print('The provided phone number is not valid.');
-
-            ToastHelper.showToast(msg: "The provided phone number is not valid", backgroundColor: Colors.red);
+            islogin=false;
+            notifyListeners();
+            ToastHelper.showToast(msg: 'phone-n-valid'.tr(), backgroundColor: Colors.red);
           }
-          else{print("+++++++++${e.code}");}
+          else{
+            islogin=false;
+            notifyListeners();
+            print("+++++++++${e.code}");}
 
           // Handle other errors
         },
@@ -171,16 +192,19 @@ class UserProvider extends ChangeNotifier{
         codeSent: (String verificationId, int? resendToken) async {
           // Update the UI - wait for the user to enter the SMS code
           islogin=false;
+          notifyListeners();
           push(context: context, screen: OtpScreen(verificationid: verificationId));
 
         },
         codeAutoRetrievalTimeout: (String verificationId) {
           // Auto-resolution timed out...
-          ToastHelper.showToast(msg: "Time out, check your connection", backgroundColor: Colors.red);
-
+          islogin=false;
+          notifyListeners();
           print("-----time out -----");
         },
       );}catch(e){
+      islogin=false;
+      notifyListeners();
       print("-----------------$e");
     }
 
@@ -213,6 +237,7 @@ class UserProvider extends ChangeNotifier{
   Future<void> signOut(BuildContext context) async {
     try {
       await FirebaseAuth.instance.signOut();
+      SharedPreferencesHelper.setBool("login", false);
       pushAndRemove(context: context, screen: LoginScreen());
       // Sign-out successful.
     } catch (e) {

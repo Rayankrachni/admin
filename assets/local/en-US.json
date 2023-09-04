@@ -16,6 +16,12 @@
   "add": "Add",
   "add-title": "Add New User",
   "select-code": "Select your code country",
-  "edit-title": "Edit User Information"
+  "edit-title": "Edit User Information",
+  "some-wrong": "Something went wrong try again",
+  "phone-n-valid": "The provided phone number is not valid",
+  "invalid-infor": "Invalid User Information",
+  "otp-code": "Otp Code",
+  "notification": "Notification has been sent"
+
 
 }

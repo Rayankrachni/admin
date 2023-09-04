@@ -75,7 +75,7 @@ class _AddUserState extends State<AddUser> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       border: Border.all(
-                        color:  Colors.blueAccent,
+                        color:  Color(0xff701B45),
 
                       )
                   ),
@@ -96,7 +96,7 @@ class _AddUserState extends State<AddUser> {
                         // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
                         initialSelection: 'Fr',
                         favorite: const ['+39', 'FR'],
-                        countryFilter: const ['IT', 'FR','CD', 'CG', 'KE', 'UG','zh','vi','uz','ur','uk','tt','tr','tk','th','tg','ta','sv','sr','sk','sd','sq','so','sl','sd','ru','ro','pt','ps','pl','no','nn','nl','nb','ms','mn','ml','ml','lv','lt','ky','ku','ko','km','kk','ka','ja','it','is','id','hy','hu','hr','hi','he','ha','gl','fi','fa','et','es','en','el','de','cs','ca','dz','bs','bn','bg','be','az','ar','am','af'],
+                        countryFilter: const ['IT', 'US','USA','FR','CD', 'CG', 'KE', 'UG','zh','vi','uz','ur','uk','tt','tr','tk','th','tg','ta','sv','sr','sk','sd','sq','so','sl','sd','ru','ro','pt','ps','pl','no','nn','nl','nb','ms','mn','ml','ml','lv','lt','ky','ku','ko','km','kk','ka','ja','it','is','id','hy','hu','hr','hi','he','ha','gl','fi','fa','et','es','en','el','de','cs','ca','dz','bs','bn','bg','be','az','ar','am','af'],
                         showFlagDialog: false,
                         comparator: (a, b) => b.name!.compareTo(a.name!),
                         //Get the country information relevant to the initial selection

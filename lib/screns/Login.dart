@@ -44,15 +44,14 @@ class _LoginScreenState extends State<LoginScreen> {
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
 
 
-                 Align(
-                    alignment: Alignment.topLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
-                      child: Text('phone'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
-                    )),
+                 Padding(
+                   padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
+                   child: Text('phone'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
+                 ),
                Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -81,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
                         initialSelection: 'Fr',
                         favorite: const ['+39', 'FR'],
-                        countryFilter: const ['IT', 'FR','CD', 'CG', 'KE', 'UG','zh','vi','uz','ur','uk','tt','tr','tk','th','tg','ta','sv','sr','sk','sd','sq','so','sl','sd','ru','ro','pt','ps','pl','no','nn','nl','nb','ms','mn','ml','ml','lv','lt','ky','ku','ko','km','kk','ka','ja','it','is','id','hy','hu','hr','hi','he','ha','gl','fi','fa','et','es','en','el','de','cs','ca','dz','bs','bn','bg','be','az','ar','am','af'],
+                        countryFilter: const ['IT','US','USA' ,'FR','CD', 'CG', 'KE', 'UG','zh','vi','uz','ur','uk','tt','tr','tk','th','tg','ta','sv','sr','sk','sd','sq','so','sl','sd','ru','ro','pt','ps','pl','no','nn','nl','nb','ms','mn','ml','ml','lv','lt','ky','ku','ko','km','kk','ka','ja','it','is','id','hy','hu','hr','hi','he','ha','gl','fi','fa','et','es','en','el','de','cs','ca','dz','bs','bn','bg','be','az','ar','am','af'],
                         showFlagDialog: false,
                         comparator: (a, b) => b.name!.compareTo(a.name!),
                         //Get the country information relevant to the initial selection
@@ -93,12 +92,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: TextFormField(
                           controller: telephone,
 
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Select your code country';
-                            }
-                            return null;
-                          },
                           keyboardType: TextInputType.phone,
                           textInputAction: TextInputAction.next,
 
@@ -156,7 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       }
                       if(codePhone==null){
-                        ToastHelper.showToast(msg: "Select your code country", backgroundColor: Colors.red);
+                        ToastHelper.showToast(msg: "select-code", backgroundColor: Colors.red);
                       }
                     }, text:'login-btn'.tr() ,disable: !provider.islogin,
                 )
