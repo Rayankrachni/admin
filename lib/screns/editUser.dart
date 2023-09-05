@@ -93,7 +93,7 @@ class _EditUserState extends State<EditUser> {
 
               SizedBox(height:40,) ,
               DefaultButton(onPressed: (){
-                provider.editUser(UserModel(id: widget.user.id, email: email.text, firstname: firstname.text, deviceToken:deviceId.text, lastname: lastname.text, phone:telephone.text, amount: amount.text),context);
+                provider.editUser(UserModel(id: widget.user.id, email: email.text, firstname: firstname.text, deviceToken:deviceId.text, lastname: lastname.text, phone:telephone.text, amount: amount.text,authid:widget.user.authid ),context);
 
               //  provider.isDataStored(UserModel(id: widget.user.id, email: email.text, firstname: firstname.text, deviceToken:deviceId.text, lastname: lastname.text, phone:telephone.text, amount: amount.text));
               }, text:'save'.tr())

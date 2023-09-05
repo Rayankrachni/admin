@@ -8,6 +8,7 @@ class UserModel{
   String phone;
   String deviceToken;
   String amount;
+  String authid;
 
   UserModel({
     required this.id,
@@ -16,6 +17,7 @@ class UserModel{
     required this.deviceToken,
     required this.lastname,
     required this.phone,
+    required this.authid,
     required this.amount});
 
 
@@ -26,6 +28,7 @@ class UserModel{
     email: json['email'].toString(),
     phone: json['phone'].toString(),
     amount: json['amount'].toString(),
+    authid: json['authid'].toString(),
     deviceToken:json['deviceToken'].toString(),
 
 
@@ -41,6 +44,7 @@ class UserModel{
       'phone': phone,
       'deviceToken': deviceToken,
       'amount': amount,
+      'authid': authid,
     };
   }
 

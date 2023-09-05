@@ -170,7 +170,7 @@ class _AddUserState extends State<AddUser> {
                       {
                         String phone=codePhone+telephone.text;
 
-                        provider.storeData( UserModel(id: "", email: email.text, firstname: firstname.text, deviceToken:deviceId.text, lastname: lastname.text, phone:phone, amount: amount.text),context);
+                        provider.storeData( UserModel(id: "", email: email.text, firstname: firstname.text, deviceToken:deviceId.text, lastname: lastname.text, phone:phone, amount: amount.text,authid: ""),context);
 
                       }
                       if(codePhone==null){

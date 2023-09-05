@@ -5,6 +5,7 @@ import 'package:adminapplication/helper/app_size.dart';
 import 'package:adminapplication/model/user_model.dart';
 import 'package:adminapplication/screns/addUser.dart';
 import 'package:adminapplication/screns/editUser.dart';
+import 'package:adminapplication/widget/delete_diag.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -36,7 +37,7 @@ class _HomePageState extends State<HomePage> {
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
       stream: userProvider.getAllUsersStream(),
       builder: (context, snapshot) {
-      if(snapshot.hasData && snapshot.data!.docs.isNotEmpty){
+      if(snapshot.hasData ){
         final data = snapshot.data!.docs;
         // Convert Firestore data into a list of User objects
         final userList = snapshot.data!.docs.map((doc) {
@@ -83,32 +84,54 @@ class _HomePageState extends State<HomePage> {
                 ),
 
 
+                !userList.isEmpty?
                 Expanded(
                     child: ListView.builder(
                         itemCount: userList.length,
                         itemBuilder: (BuildContext context ,int index){
 
-                          return Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Container(
-                              height: 60,
-                              decoration:const BoxDecoration(
-                                  border: Border(
-                                      bottom: BorderSide(color: Colors.grey)
-                                  )
-                              ),
-                              child: ListTile(
-                                subtitle: Text(" ${userList[index].lastname}",style: TextStyle(fontWeight: FontWeight.normal,color: Colors.grey,fontSize: 12),),
+                          return GestureDetector(
 
-                                title: Text(" ${userList[index].firstname}",style: TextStyle(fontWeight: FontWeight.w500),),
-                                leading: Icon(CupertinoIcons.person,color: Color(0xff701B45),),
-                                trailing: IconButton(onPressed: (){
-                                  push(context: context, screen: EditUser(user:userList[index] ,));
-                                },icon: Icon(Icons.edit,color: Color(0xff701B45),size: 20,),),
+                            onLongPress: (){
+                              print("delete ");
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return WrongDialog(onPressed: (){
+                                   userProvider.deleteItem(userList[index].id,userList[index].authid,context);
+                                    //userProvider.deleteUserByUID(userList[index].authid);
+                                  },);
+
+
+
+                                  //
+                                },
+                              );
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Container(
+                                height: 60,
+                                decoration:const BoxDecoration(
+                                    border: Border(
+                                        bottom: BorderSide(color: Colors.grey)
+                                    )
+                                ),
+                                child: ListTile(
+                                  subtitle: Text(" ${userList[index].lastname}",style: TextStyle(fontWeight: FontWeight.normal,color: Colors.grey,fontSize: 12),),
+
+                                  title: Text(" ${userList[index].firstname}",style: TextStyle(fontWeight: FontWeight.w500),),
+                                  leading: Icon(CupertinoIcons.person,color: Color(0xff701B45),),
+                                  trailing: IconButton(onPressed: (){
+                                    push(context: context, screen: EditUser(user:userList[index] ,));
+                                  },icon: Icon(Icons.edit,color: Color(0xff701B45),size: 20,),),
+                                ),
                               ),
                             ),
                           );
-                        }))
+                        })):SizedBox(
+                            height: AppSize.height*0.5,
+                            child: Center(child: Text('no-user'.tr())))
 
 
               ],
@@ -119,10 +142,10 @@ class _HomePageState extends State<HomePage> {
         return Container(
             color: Colors.white,
             child: Text('${''.tr()}: ${snapshot.error}'));
-      } else {
+      } else{
 
         return  Scaffold(
-          appBar: AppBar(
+            appBar: AppBar(
               centerTitle: true,
               backgroundColor:  Color(0xff701B45),
               title:  Text('Home'.tr(),style: TextStyle(color: Colors.white),),
@@ -141,13 +164,13 @@ class _HomePageState extends State<HomePage> {
               }
                 ,icon: Icon(Icons.language,color: Colors.white,),),
             ),
-          body: SingleChildScrollView(
-            child: Column(
+            body: SingleChildScrollView(
+              child: Column(
 
-              crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
 
-              children: [
-                Row(
+                children: [
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
@@ -158,26 +181,24 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
 
-                Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(height: 30,),
-                      CircularProgressIndicator(),
-                      Text('no-user'.tr()),
-                    ],
-                  ),
-                )
+                  SizedBox(height: 50,),
+
+                  SizedBox(
+                      height: AppSize.height*0.5,
+                      child: Center(child: CircularProgressIndicator()),)
 
 
 
 
-              ],
-            ),
-          )
+
+
+                ],
+              ),
+            )
         );
       }
+
+
 
   },
 );

@@ -21,5 +21,10 @@
   "otp-code": "رمز OTP",
   "notification": "تم إرسال الإشعار",
   "dataSaved": "تم حفظ البيانات",
-  "required": " البيانات مطلوبة"
+  "required": " البيانات مطلوبة",
+  "no-user":"لا يوجد مستخدمين",
+  "delete-title": "حذف هذا المستخدم",
+  "delete-description": "سيتم حذف هذا المستخدم بشكل نهائي.",
+  "cancel": "إلغاء",
+  "delete": "حذف"
 }

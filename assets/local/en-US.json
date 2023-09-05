@@ -24,7 +24,9 @@
   "notification": "Notification has been sent",
   "dataSaved": "Data Saved",
   "required": "Required",
-  "no-user":"No users are Existed"
-
-
+  "no-user":"No users are Existed",
+  "delete-title": "Delete this user",
+  "delete-description": "this user will be deleted definitively.",
+  "cancel": "Cancel",
+  "delete": "Delete"
 }
