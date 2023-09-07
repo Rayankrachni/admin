@@ -79,12 +79,7 @@ class _HomePageState extends State<HomePage>  with TickerProviderStateMixin {
           }
         }
           , icon: Icon(Icons.language,color: Colors.white,),),
-        actions: [
-          IconButton(onPressed: () {
-            provider.signOut(context);
-          }, icon: Icon(Icons.login,color: Colors.white,),),
 
-        ],
         title: Text('Home'.tr(),style: TextStyle(color: Colors.white),),
       ),
       body:  StreamBuilder<bool>(

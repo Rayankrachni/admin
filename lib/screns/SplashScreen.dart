@@ -20,14 +20,14 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     Timer(
         const Duration(seconds: 3),() async{
-      bool? isLogin =  await SharedPreferencesHelper.getBool('login');
+      /*bool? isLogin =  await SharedPreferencesHelper.getBool('login');
       if(isLogin==null || isLogin == false){
         pushAndRemove(context: context, screen: LoginScreen());
       }
       else{
-        pushAndRemove(context: context, screen:  HomePage());
-      }
 
+      }*/
+      pushAndRemove(context: context, screen:  HomePage());
     }
     );
 
