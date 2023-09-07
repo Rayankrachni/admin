@@ -1,4 +1,5 @@
 
+import 'package:adminapplication/helper/app_size.dart';
 import 'package:adminapplication/helper/app_toast.dart';
 import 'package:adminapplication/model/user_model.dart';
 import 'package:adminapplication/widget/button_widget.dart';
@@ -33,14 +34,15 @@ class _AddUserState extends State<AddUser> {
   Widget build(BuildContext context) {
 
     final UserProvider provider=Provider.of<UserProvider>(context);
+    provider.checkConnectivity();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title:   Text('add-title'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 22),),
+        title:   Text('add-title'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 22,fontFamily: "Montserrat"),),
 
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.only(left: 20.0,right: 20,top: 20),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
@@ -50,26 +52,26 @@ class _AddUserState extends State<AddUser> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
-                  child: Text('first-name'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
+                  child: Text('first-name'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,fontFamily: "Montserrat"),),
                 ),
                 CustomTextFormField(controller: firstname, hintText: 'first-name'.tr(), prefixIcon: Icons.person, textInputType: TextInputType.text),
 
                 SizedBox(height: 20,) ,
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
-                  child: Text('second-name'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
+                  child: Text('second-name'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,fontFamily: "Montserrat"),),
                 ),
                 CustomTextFormField(controller: lastname, hintText:'second-name'.tr(), prefixIcon: Icons.person, textInputType: TextInputType.text),
                 SizedBox(height: 10,) ,
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
-                  child: Text('email'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
+                  child: Text('email'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,fontFamily: "Montserrat"),),
                 ),
                 CustomTextFormField(controller: email, hintText: 'email'.tr(), prefixIcon: Icons.email, textInputType: TextInputType.emailAddress),
                 SizedBox(height: 10,) ,
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
-                  child: Text('phone'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
+                  child: Text('phone'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,fontFamily: "Montserrat"),),
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -103,7 +105,7 @@ class _AddUserState extends State<AddUser> {
                             "on init ${code!.name!} ${code.dialCode} ${code.name}"),
                       ),
                       SizedBox(
-                        width: 200,
+                        width: AppSize.width*0.5,
                         child: TextFormField(
                           controller: telephone,
 
@@ -121,7 +123,7 @@ class _AddUserState extends State<AddUser> {
                               ),
 
                               hintStyle: const TextStyle(
-                                  fontFamily: 'myriad',
+                                  fontFamily: "Montserrat",
 
                                   fontSize: 14,
                                   color: Colors.grey
@@ -156,7 +158,7 @@ class _AddUserState extends State<AddUser> {
                 SizedBox(height: 10,) ,*/
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
-                  child: Text('amount'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
+                  child: Text('amount'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,fontFamily: "Montserrat"),),
                 ),
                 CustomTextFormField(controller: amount, hintText: 'amount'.tr(), prefixIcon: Icons.monetization_on, textInputType: TextInputType.number),
                 SizedBox(height: 20,) ,
@@ -168,6 +170,8 @@ class _AddUserState extends State<AddUser> {
 
                       if(_formKey.currentState!.validate() )
                       {
+
+
                         String phone=codePhone+telephone.text;
 
                         provider.storeData( UserModel(id: "", email: email.text, firstname: firstname.text, deviceToken:deviceId.text, lastname: lastname.text, phone:phone, amount: amount.text,authid: ""),context);

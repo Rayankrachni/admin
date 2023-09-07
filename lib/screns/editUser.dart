@@ -38,11 +38,11 @@ class _EditUserState extends State<EditUser> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title:   Text('edit-title'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 22),),
+        title:   Text('edit-title'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 22,fontFamily: "Montserrat"),),
 
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.only(left: 20.0,right: 20,top: 20),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -51,27 +51,27 @@ class _EditUserState extends State<EditUser> {
 
               Padding(
                 padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
-                child: Text('first-name'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
+                child: Text('first-name'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,fontFamily: "Montserrat"),),
               ),
 
 
-              CustomTextFormField(controller: firstname, hintText: 'first-name'.tr(), prefixIcon: Icons.person, textInputType: TextInputType.text),
+              CustomTextFormField(controller: firstname, hintText: 'first-name'.tr(), prefixIcon: Icons.person, textInputType: TextInputType.text,),
               SizedBox(height: 10,) ,
               Padding(
                 padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
-                child: Text('second-name'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
+                child: Text('second-name'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,fontFamily: "Montserrat"),),
               ),
               CustomTextFormField(controller: lastname, hintText: 'second-name', prefixIcon: CupertinoIcons.padlock_solid, textInputType: TextInputType.text),
               SizedBox(height: 10,) ,
               Padding(
                 padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
-                child: Text('email'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
+                child: Text('email'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,fontFamily: "Montserrat"),),
               ),
               CustomTextFormField(controller: email, hintText:'email'.tr(), prefixIcon: Icons.email, textInputType: TextInputType.emailAddress),
               SizedBox(height: 10,) ,
               Padding(
                 padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
-                child: Text('phone'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
+                child: Text('phone'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,fontFamily: "Montserrat"),),
               ),
               CustomTextFormField(controller: telephone, hintText: 'phone'.tr(), prefixIcon: Icons.phone, textInputType: TextInputType.phone),
               SizedBox(height:10,) ,
@@ -86,7 +86,7 @@ class _EditUserState extends State<EditUser> {
 
               Padding(
                 padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
-                child: Text('amount'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
+                child: Text('amount'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,fontFamily: "Montserrat"),),
               ),
               CustomTextFormField(controller: amount, hintText:'amount'.tr(), prefixIcon: Icons.monetization_on, textInputType: TextInputType.number),
 

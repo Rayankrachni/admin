@@ -10,6 +10,7 @@ import 'package:adminapplication/screns/Login.dart';
 import 'package:adminapplication/screns/OtpScreen.dart';
 import 'package:adminapplication/screns/homeScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -21,27 +22,36 @@ class UserProvider extends ChangeNotifier{
 
   FirebaseAuth auth = FirebaseAuth.instance;
   void storeData(UserModel model,BuildContext context) async {
-    try {
-      DocumentReference docRef = await FirebaseFirestore.instance.collection('users').add({
 
-        "id":"id",
-        'firstname': model.firstname,
-        'lastname': model.lastname,
-        'email': model.email,
-        'phone': model.phone,
-        'amount': model.amount,
-        'deviceToken': "0000",
-        'authid':"authid"
-      });
-      await docRef.update({'id': docRef.id});
+    if(Connected)
+    {
 
+      try {
+        DocumentReference docRef = await FirebaseFirestore.instance.collection('users').add({
+
+          "id":"id",
+          'firstname': model.firstname,
+          'lastname': model.lastname,
+          'email': model.email,
+          'phone': model.phone,
+          'amount': model.amount,
+          'deviceToken': "0000",
+          'authid':"authid"
+        });
+        await docRef.update({'id': docRef.id});
+
+        pushAndRemove(context: context, screen: HomePage());
+      } catch (e) {
+        print('Error storing data: $e');
+        ToastHelper.showToast(msg:'some-wrong'.tr(), backgroundColor: Colors.red);
+
+        islogin=false;
+        notifyListeners();
+      }
+    }
+    else{
+      ToastHelper.showToast(msg: "no-internet".tr(), backgroundColor: Colors.red);
       pushAndRemove(context: context, screen: HomePage());
-    } catch (e) {
-      print('Error storing data: $e');
-      ToastHelper.showToast(msg:'some-wrong'.tr(), backgroundColor: Colors.red);
-
-      islogin=false;
-      notifyListeners();
     }
   }
 
@@ -182,57 +192,65 @@ class UserProvider extends ChangeNotifier{
 
 
   Future<void> loginUser(String phone, BuildContext context) async {
+    if(Connected){
+      try{
+        await FirebaseAuth.instance.signOut();
 
-    try{
-      await FirebaseAuth.instance.signOut();
+        await FirebaseAuth.instance.verifyPhoneNumber(
+          phoneNumber: phone,
 
-      await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: phone,
+          timeout: Duration(seconds: 120),
+          verificationCompleted: (PhoneAuthCredential credential) async {
+            // ANDROID ONLY!
+            // Sign the user in (or link) with the auto-generated credential
+            await auth.signInWithCredential(credential);
 
-        timeout: Duration(seconds: 120),
-        verificationCompleted: (PhoneAuthCredential credential) async {
-          // ANDROID ONLY!
-          // Sign the user in (or link) with the auto-generated credential
-          await auth.signInWithCredential(credential);
-
-          SharedPreferencesHelper.setBool("login", true);
-          islogin=false;
-          notifyListeners();
-        },
-        verificationFailed: (FirebaseAuthException e) {
-          if (e.code == 'invalid-phone-number') {
-
+            SharedPreferencesHelper.setBool("login", true);
             islogin=false;
             notifyListeners();
-            ToastHelper.showToast(msg: 'phone-n-valid'.tr(), backgroundColor: Colors.red);
-          }
-          else{
+          },
+          verificationFailed: (FirebaseAuthException e) {
+            if (e.code == 'invalid-phone-number') {
+
+              islogin=false;
+              notifyListeners();
+              ToastHelper.showToast(msg: 'phone-n-valid'.tr(), backgroundColor: Colors.red);
+            }
+            else{
+              islogin=false;
+              notifyListeners();
+              ToastHelper.showToast(msg: "try again ${e.code}", backgroundColor: Colors.red);
+              print("+++++++++${e.code}");}
+
+            // Handle other errors
+          },
+
+
+          codeSent: (String verificationId, int? resendToken) async {
+            // Update the UI - wait for the user to enter the SMS code
             islogin=false;
             notifyListeners();
-            ToastHelper.showToast(msg: "try again ${e.code}", backgroundColor: Colors.red);
-            print("+++++++++${e.code}");}
+            push(context: context, screen: OtpScreen(verificationid: verificationId));
 
-          // Handle other errors
-        },
-
-
-        codeSent: (String verificationId, int? resendToken) async {
-          // Update the UI - wait for the user to enter the SMS code
-          islogin=false;
-          notifyListeners();
-          push(context: context, screen: OtpScreen(verificationid: verificationId));
-
-        },
-        codeAutoRetrievalTimeout: (String verificationId) {
-          // Auto-resolution timed out...
-          islogin=false;
-          notifyListeners();
-        },
-      );}catch(e){
+          },
+          codeAutoRetrievalTimeout: (String verificationId) {
+            // Auto-resolution timed out...
+            islogin=false;
+            notifyListeners();
+          },
+        );}catch(e){
+        islogin=false;
+        notifyListeners();
+        print("-----------------$e");
+      }
+    }
+    else{
       islogin=false;
       notifyListeners();
-      print("-----------------$e");
+      ToastHelper.showToast(msg: "no-internet".tr(), backgroundColor: Colors.red);
+
     }
+
 
   }
 
@@ -365,5 +383,33 @@ class UserProvider extends ChangeNotifier{
 
 
 
+  final Connectivity _connectivity = Connectivity();
 
+  bool _connected=true;
+  set Connected(bool val)
+  {
+
+    _connected=val;
+    notifyListeners();
+  }
+
+  bool get  Connected =>_connected;
+
+  // Function to check the connectivity status
+  Future<bool> checkConnectivity() async {
+    var connectivityResult = await _connectivity.checkConnectivity();
+
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
+      Connected=true;
+      print("Connected $Connected");
+      notifyListeners();
+      return true;
+    } else {
+      Connected=false;
+      print("Connected $Connected");
+      notifyListeners();
+      return false;
+    }
+  }
 }

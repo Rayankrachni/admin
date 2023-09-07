@@ -4,7 +4,7 @@
   "Login": "Admin Login Page",
   "splash": "Splash Screen",
   "code-verification": "Otp Code Verification",
-  "Home": "Home Page",
+  "Home": "Accounts management",
   "first-name": "First Name",
   "second-name": "Last Name",
   "email": "Email",
@@ -28,5 +28,6 @@
   "delete-title": "Delete this user",
   "delete-description": "this user will be deleted definitively.",
   "cancel": "Cancel",
-  "delete": "Delete"
+  "delete": "Delete",
+  "no-internet": "No network connection. Please check your connection."
 }

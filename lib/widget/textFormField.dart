@@ -38,7 +38,7 @@ class CustomTextFormField extends StatelessWidget {
       keyboardType: textInputType,
       textInputAction: TextInputAction.next,
 
-      style:const TextStyle(color: Colors.black),
+      style:const TextStyle(color: Colors.black,fontFamily: "Montserrat",fontSize: 14),
       obscureText: obscureText,
       maxLines: lines,
       decoration: InputDecoration(
@@ -54,8 +54,7 @@ class CustomTextFormField extends StatelessWidget {
           size: 20,
         ),
         hintStyle: const TextStyle(
-            fontFamily: 'myriad',
-
+            fontFamily: "Montserrat",
             fontSize: 14,
             color: Colors.grey
         ),

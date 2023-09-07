@@ -28,7 +28,7 @@ class OtpScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
 
-            Text('code-verification'.tr(),style: TextStyle(color: Colors.black,fontSize: 25,fontWeight: FontWeight.bold),),
+            Text('code-verification'.tr(),style: TextStyle(color: Colors.black,fontSize: 25,fontWeight: FontWeight.bold,fontFamily: "Montserrat"),),
             SizedBox(height: 20,),
             Padding(
               padding: const EdgeInsets.all(20.0),

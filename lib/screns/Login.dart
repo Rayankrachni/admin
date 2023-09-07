@@ -30,15 +30,15 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
 
     final UserProvider provider=Provider.of<UserProvider>(context);
+    provider.checkConnectivity();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         centerTitle: true,
-        title: Text('Login'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 22),),
+
 
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.only(top: 20.0,left: 20,right: 20),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
@@ -48,9 +48,21 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
 
 
+                const Center(
+                  child:  CircleAvatar(
+                    radius: 50,
+                    backgroundImage: AssetImage("assets/images/fca-logo.jpg"),
+                  ),
+                ),
+
+                SizedBox(height: 20,),
+
+                Center(child: Text('Login'.tr(),style: TextStyle(fontWeight: FontWeight.w600,fontSize: 22,fontFamily: "Montserrat"),)),
+
+                SizedBox(height: 40,),
                  Padding(
                    padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
-                   child: Text('phone'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
+                   child: Text('phone'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,fontFamily: "Montserrat"),),
                  ),
                Container(
                   decoration: BoxDecoration(
@@ -100,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           keyboardType: TextInputType.phone,
                           textInputAction: TextInputAction.next,
 
-                          style:const TextStyle(color: Colors.black),
+                          style:const TextStyle(color: Colors.black,fontFamily: "Montserrat"),
                           decoration: InputDecoration(
                               hintText: 'phone'.tr(),
 
@@ -110,9 +122,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
 
                               hintStyle: const TextStyle(
-                                  fontFamily: 'myriad',
+                                  fontFamily: "Montserrat",
 
-                                  fontSize: 14,
+                                  fontSize: 12,
                                   color: Colors.grey
                               ),
 

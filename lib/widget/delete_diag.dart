@@ -69,7 +69,7 @@ class _WrongDialogState extends State<WrongDialog> with TickerProviderStateMixin
                 SizedBox(height: 20,),
                 Text(
                     'delete-title'.tr(),
-                   style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
+                   style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,fontFamily: "Montserrat"),
 
                   //  style: AppTextStyle(size:20, fontweight: FontWeight.bold, color: errorColor,)
 
@@ -80,7 +80,7 @@ class _WrongDialogState extends State<WrongDialog> with TickerProviderStateMixin
                       Text(
                           'delete-description'.tr(),
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 14,fontWeight: FontWeight.w500),
+                          style: TextStyle(fontSize: 14,fontWeight: FontWeight.w500,fontFamily: "Montserrat"),
                          // AppTextStyle(size:12, fontweight: FontWeight.w500, color: Theme.of(context).colorScheme.onSecondary,)
 
                       ),

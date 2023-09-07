@@ -37,7 +37,7 @@ class DefaultButton extends StatelessWidget {
           children: [
           !provider.islogin ?  Text(
                 text,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal,color: Colors.white)
+                style:const TextStyle(fontSize: 16, fontWeight: FontWeight.normal,color: Colors.white,fontFamily: "Montserrat")
             ):CircularProgressIndicator(color: Colors.white,),
             const SizedBox(width: 10,),
             if(isOnboading) const Icon(Icons.arrow_forward,color: Colors.white,)
