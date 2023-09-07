@@ -29,5 +29,6 @@
   "delete-description": "this user will be deleted definitively.",
   "cancel": "Cancel",
   "delete": "Delete",
-  "no-internet": "No network connection. Please check your connection."
+  "no-internet": "No network connection. Please check your connection.",
+  "item-delete": "item deleted successfully"
 }

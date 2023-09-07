@@ -66,7 +66,7 @@ class UserProvider extends ChangeNotifier{
 
       print('Item deleted successfully.');
 
-      ToastHelper.showToast(msg:'Item deleted successfully'.tr(), backgroundColor: Colors.green);
+      ToastHelper.showToast(msg:'item-delete'.tr(), backgroundColor: Colors.green);
       pushAndRemove(context: context, screen: HomePage());
       isDelete=false;
       notifyListeners();
@@ -128,7 +128,7 @@ class UserProvider extends ChangeNotifier{
         users.add(UserModel.fromJson(data as Map<String,dynamic>));
       });
 
-      print("-------users ${users.map((e) => e.firstname)}");
+
 
       return users;
     } catch (e) {
@@ -286,85 +286,6 @@ class UserProvider extends ChangeNotifier{
   }
 
   bool get  islogin =>_islogin;
-
-
-  Future<void> resendOTPForReauthentication(String phoneNumber,BuildContext context) async {
-    try {
-      await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: phoneNumber,
-
-        timeout: Duration(seconds: 120),
-        verificationCompleted: (PhoneAuthCredential credential) async {
-          // ANDROID ONLY!
-          // Sign the user in (or link) with the auto-generated credential
-          await auth.signInWithCredential(credential);
-
-          SharedPreferencesHelper.setBool("login", true);
-          islogin=false;
-          notifyListeners();
-        },
-        verificationFailed: (FirebaseAuthException e) {
-          if (e.code == 'invalid-phone-number') {
-
-            islogin=false;
-            notifyListeners();
-            ToastHelper.showToast(msg: 'phone-n-valid'.tr(), backgroundColor: Colors.red);
-          }
-          else{
-            islogin=false;
-            notifyListeners();
-            ToastHelper.showToast(msg: "try again ${e.code}", backgroundColor: Colors.red);
-            print("+++++++++${e.code}");}
-
-          // Handle other errors
-        },
-
-
-        codeSent: (String verificationId, int? resendToken) async {
-          // Update the UI - wait for the user to enter the SMS code
-          islogin=false;
-          notifyListeners();
-          push(context: context, screen: OtpScreen(verificationid: verificationId));
-
-        },
-        codeAutoRetrievalTimeout: (String verificationId) {
-          // Auto-resolution timed out...
-          islogin=false;
-          notifyListeners();
-        },
-      );}catch(e){
-      print('New OTP sent for reauthentication.');
-    } catch (e) {
-      print('Error sending new OTP: $e');
-    }
-  }
-
-  Future<void> reauthenticateWithOTP(String verificationId, String smsCode) async {
-    try {
-      final AuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
-      final User user = FirebaseAuth.instance.currentUser!;
-
-      // Reauthenticate the user with the new OTP credential
-      await user.reauthenticateWithCredential(credential);
-
-      try {
-        User? user = await FirebaseAuth.instance.userChanges().firstWhere((element) => element!.uid == 'Dibgbp8wZUTXAANV3KQaiRf24lG3');
-        if (user != null) {
-          await user.delete();
-          print('User with UID deleted successfully.');
-        } else {
-          print('User not found with UID.');
-        }
-      } catch (e) {
-        print('Error deleting user: $e');
-      }
-
-
-      print('User reauthenticated successfully with the new OTP.');
-    } catch (e) {
-      print('Error during reauthentication: $e');
-    }
-  }
 
 
 
