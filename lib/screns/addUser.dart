@@ -5,6 +5,7 @@ import 'package:adminapplication/model/user_model.dart';
 import 'package:adminapplication/widget/button_widget.dart';
 import 'package:adminapplication/widget/textFormField.dart';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:country_picker/country_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +29,7 @@ class _AddUserState extends State<AddUser> {
   TextEditingController amount=TextEditingController();
 
   String codePhone="+1";
+  String imoji="🇺🇸";
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -82,41 +84,79 @@ class _AddUserState extends State<AddUser> {
                       )
                   ),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
 
-                      CountryCodePicker(
-                        onChanged: (v){
-                          setState(() {
-                            codePhone=v.toString();
-                          });
-                         
+                      TextButton(
+                        onPressed: () {
+                          showCountryPicker(
+                            context: context,
+
+                            //Optional.  Can be used to exclude(remove) one ore more country from the countries list (optional).
+                            exclude: <String>['KN', 'MF'],
+                            favorite: <String>['SE'],
+                            //Optional. Shows phone code before the country name.
+                            showPhoneCode: true,
+                            onSelect: (Country country) {
+                              print('Select country: ${country.displayName}');
+                              print('Select country: ${country.flagEmoji}');
+                              print('Select country: ${country.countryCode}');
+                              print('Select country: ${country.phoneCode}');
+                              setState(() {
+
+                                imoji=country.flagEmoji;
+                                codePhone="+"+country.phoneCode;
+                              });
+
+                            },
+
+                            // Optional. Sets the theme for the country list picker.
+                            countryListTheme: CountryListThemeData(
+                              // Optional. Sets the border radius for the bottomsheet.
+                              borderRadius:const BorderRadius.only(
+                                topLeft: Radius.circular(40.0),
+                                topRight: Radius.circular(40.0),
+                              ),
+                              // Optional. Styles the search field.
+                              inputDecoration: InputDecoration(
+                                labelText: 'Search',
+                                hintText: 'Start typing to search',
+                                prefixIcon: const Icon(Icons.search),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: const Color(0xFF8C98A8).withOpacity(0.2),
+                                  ),
+                                ),
+                              ),
+                              // Optional. Styles the text in the search field
+                              searchTextStyle:const TextStyle(
+                                color: Colors.blue,
+                                fontSize: 18,
+                              ),
+                            ),
+                          );
                         },
-                        showFlag: true,
-
-
-                        // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-                        initialSelection: 'US',
-                        favorite: const ['+1', 'US'],
-                        countryFilter: const
-                        ["ZW","ZM","ZA","YT","YE","WS","WF","VU","VN","VI","VG","VE","VC","VA","UZ","UY","US","USAsssss","UM","UG","UA",'TZ','TW','TV','TT','TR','TO','TN','TM','TL','TK','TJ','TH','TG','TF','TD','TC','SZ','SY','SX','SV','ST','SS','SR','SO','SN','SM','SL','SK','SJ','SI','SH','SG','SE','SD','SC','SB','SQ','RW','RU','RS','RO','RE','QA','PY','PW','PT','PS','PR','PN','PM','PL','PK','PH','PG','PF','PE','PA','OM','NZ','NU','NR','NP','NO','NL','NI','NG','NE','NA','MZ','MY','MX','MW','MV','MU','MT','MR','MS','MQ','MP','MO','MN','MM','ML','MK','MH','MG','MF','ME','MD','MC','MA','LY','LV','LU','LT','LS','LR','LK','LI','LC','LB','LA','KZ','KY','KW','KR','KP','KN','KM','KI','KH','KG','KE','JP','JO','JM','JE','IT','IS','IR','IQ','IO','IN','IM','IL','IE','ID','HU','HT','HR','HN','HM','JK','GY','GW','GU','GT','GS','GR','GP','GN','GM','GL','GI','GH','GG','GF','GE','GD','GB','GA','FR','FO','FM','FK','FJ','FI','ET','ES','ER','EH','EG','EE','EC','DZ','DZ','DO','DM','DK','DJ','DE','CZ','CY','CX','CW','CV','CU','CR','CO','CN','CL','CK','CI','CH','CG','CF','CD','CC','CA','BZ','BY','BW','BV','BT','BS','BR','BQ','BO','BN','BM','BL','BJ','BI','BH','BG','BF','BE','BD','BB','BA','AZ','AX','AW','AU','AT','AS','AR','AQ','AO','AM','AL','AI','AG','AF','AE','AD'],
-                        showFlagDialog: false,
-                        comparator: (a, b) => b.name!.compareTo(a.name!),
-                        //Get the country information relevant to the initial selection
-                        onInit: (code) => debugPrint(
-                            "on init ${code!.name!} ${code.dialCode} ${code.name}"),
+                        child:  Text(" ${imoji} ${codePhone}",style: TextStyle(color: Colors.black),),
                       ),
+
                       SizedBox(
-                        width: AppSize.width*0.5,
+                        width: AppSize.width*0.55,
                         child: TextFormField(
                           controller: telephone,
 
-
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'required'.tr();
+                            }
+                            return null;
+                          },
                           keyboardType: TextInputType.phone,
                           textInputAction: TextInputAction.next,
 
                           style:const TextStyle(color: Colors.black),
                           decoration: InputDecoration(
-                              hintText:'phone'.tr(),
+                              hintText: 'phone'.tr(),
 
                               contentPadding: const EdgeInsets.symmetric(
                                 vertical: 5.0,
@@ -124,23 +164,23 @@ class _AddUserState extends State<AddUser> {
                               ),
 
                               hintStyle: const TextStyle(
-                                  fontFamily: "Montserrat",
+                                  fontFamily: 'Montserrat',
 
                                   fontSize: 14,
                                   color: Colors.grey
                               ),
 
 
-                              enabledBorder:UnderlineInputBorder(
+                              enabledBorder: const UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.transparent)
                               ),
-                              focusedBorder: UnderlineInputBorder(
+                              focusedBorder:const UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.transparent)
                               ),
 
 
-                              errorBorder:UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.red)
+                              errorBorder:const UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.transparent)
                               )
                           ),
                         ),
