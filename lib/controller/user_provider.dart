@@ -138,7 +138,7 @@ class UserProvider extends ChangeNotifier{
   }
 
   Future<void> sendNotificationToUser(String userDeviceToken, String title, String body) async {
-    final serverKey = 'AAAAK13vUTA:APA91bFTmUbBQmKJTIJUPjCRYseR8ffk2RXUZ2ir76Bxk9heZjOZ9PS6S5UyMUMr_5H520srHMQBlveNtvmdww0XWGbptJDzKWhPMCMjsew8LjpVz4rkp6xw8PYkrq7b3v6fPYtZ0ovw';
+    final serverKey = 'AAAAz5helNY:APA91bFzTbOMZkyCrHFs0IADosK5PkyxtMb-C-i5yJEcLpVJPaBlL5JIbyDQuXp0fBmqHz7MxqqAXbZjaANCzgEaOwN-9Dobaemi-rDUAEOk-CoiQvlJ5fpUI1wElrod0VTrCrCuMfUN';
     final url = 'https://fcm.googleapis.com/fcm/send';
 
     final headers = {
