@@ -31,12 +31,10 @@ class UserProvider extends ChangeNotifier{
 
           "id":"id",
           'firstname': model.firstname,
-          'lastname': model.lastname,
-          'email': model.email,
           'phone': model.phone,
           'amount': model.amount,
           'deviceToken': "0000",
-          'authid':"authid"
+          'country': model.country,
         });
         await docRef.update({'id': docRef.id});
 
@@ -55,7 +53,7 @@ class UserProvider extends ChangeNotifier{
     }
   }
 
-  Future<void> deleteItem(String itemId,String uid,BuildContext context) async {
+  Future<void> deleteItem(String itemId,BuildContext context) async {
     try {
       isDelete=true;
       notifyListeners();
@@ -90,8 +88,7 @@ class UserProvider extends ChangeNotifier{
           .collection('users')
           .doc(model.id)
           .update({   'firstname': model.firstname,
-        'lastname': model.lastname,
-        'email': model.email,
+        'country': model.country,
         'phone': model.phone,
         'amount': model.amount,});
 
@@ -169,12 +166,12 @@ class UserProvider extends ChangeNotifier{
     }
   }
 
-  Future<bool> isDataStored(UserModel model) async {
+ /* Future<bool> isDataStored(UserModel model) async {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('users')
           .where('firstname', isEqualTo: model.firstname)
-          .where('lastname', isEqualTo: model.lastname)
+          .where('country', isEqualTo: model.country)
           .where('email', isEqualTo: model.email)
           .where('phone', isEqualTo: model.phone)
           .where('amount', isEqualTo: model.amount)
@@ -188,7 +185,7 @@ class UserProvider extends ChangeNotifier{
       print('Error checking data: $e');
       return false;
     }
-  }
+  }*/
 
 
   Future<void> loginUser(String phone, BuildContext context) async {

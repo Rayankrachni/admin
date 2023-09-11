@@ -30,17 +30,21 @@ class _AddUserState extends State<AddUser> {
 
   String codePhone="+1";
   String imoji="🇺🇸";
+  String countryName="United State";
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
 
     final UserProvider provider=Provider.of<UserProvider>(context);
+    Locale currentLocale = EasyLocalization.of(context)!.locale;
+
+    print(currentLocale);
     provider.checkConnectivity();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title:   Text('add-title'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 22,fontFamily: "Montserrat"),),
+        title:   Text('add-title'.tr(),style:const  TextStyle(fontWeight: FontWeight.w500,fontSize: 22,fontFamily: "Montserrat"),),
 
       ),
       body: Padding(
@@ -58,19 +62,81 @@ class _AddUserState extends State<AddUser> {
                 ),
                 CustomTextFormField(controller: firstname, hintText: 'first-name'.tr(), prefixIcon: Icons.person, textInputType: TextInputType.text),
 
-                SizedBox(height: 20,) ,
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
-                  child: Text('second-name'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,fontFamily: "Montserrat"),),
-                ),
-                CustomTextFormField(controller: lastname, hintText:'second-name'.tr(), prefixIcon: Icons.person, textInputType: TextInputType.text),
                 SizedBox(height: 10,) ,
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
-                  child: Text('email'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,fontFamily: "Montserrat"),),
+                  child: Text('country'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,fontFamily: "Montserrat"),),
                 ),
-                CustomTextFormField(controller: email, hintText: 'email'.tr(), prefixIcon: Icons.email, textInputType: TextInputType.emailAddress),
-                SizedBox(height: 10,) ,
+                Container(
+                  width: AppSize.width,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color:   Color(0xff701B45),
+                    ),
+                    borderRadius: BorderRadius.circular(20)
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8.0,right: 8),
+                    child: Row(
+
+                      children: [
+                        Icon(Icons.flag,color: Color(0xff701B45),),
+                        SizedBox(
+
+                          child: TextButton(
+                            onPressed: () {
+                              showCountryPicker(
+                                context: context,
+
+                                //Optional.  Can be used to exclude(remove) one ore more country from the countries list (optional).
+                                exclude: <String>['KN', 'MF'],
+                                favorite: <String>['SE'],
+                                //Optional. Shows phone code before the country name.
+                                showPhoneCode: true,
+                                onSelect: (Country country) {
+                                  setState(() {
+
+
+                                    countryName=country.name;
+                                  });
+
+                                },
+
+                                // Optional. Sets the theme for the country list picker.
+                                countryListTheme: CountryListThemeData(
+                                  // Optional. Sets the border radius for the bottomsheet.
+                                  borderRadius:const BorderRadius.only(
+                                    topLeft: Radius.circular(40.0),
+                                    topRight: Radius.circular(40.0),
+                                  ),
+                                  // Optional. Styles the search field.
+                                  inputDecoration: InputDecoration(
+                                      labelText: 'search'.tr(),
+                                      hintText: 'start'.tr(),
+                                    prefixIcon: const Icon(Icons.search),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: const Color(0xFF8C98A8).withOpacity(0.2),
+                                      ),
+                                    ),
+                                  ),
+                                  // Optional. Styles the text in the search field
+                                  searchTextStyle:const TextStyle(
+                                    color:  Color(0xff701B45),
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              );
+                            },
+                            child:  Text("$countryName",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,fontFamily: "Montserrat",color: Colors.black)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                const  SizedBox(height: 10,) ,
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
                   child: Text('phone'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,fontFamily: "Montserrat"),),
@@ -189,14 +255,7 @@ class _AddUserState extends State<AddUser> {
                   ),
                 ),
                SizedBox(height: 10,) ,
-               /* const Align(
-                    alignment: Alignment.topLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
-                      child: Text("Device Id",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
-                    )),
-                CustomTextFormField(controller: deviceId, hintText: "device", prefixIcon: Icons.mobile_friendly_rounded, textInputType: TextInputType.text),
-                SizedBox(height: 10,) ,*/
+
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
                   child: Text('amount'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,fontFamily: "Montserrat"),),
@@ -215,12 +274,10 @@ class _AddUserState extends State<AddUser> {
 
                         String phone=codePhone+telephone.text;
 
-                        provider.storeData( UserModel(id: "", email: email.text, firstname: firstname.text, deviceToken:deviceId.text, lastname: lastname.text, phone:phone, amount: amount.text,authid: ""),context);
+                        provider.storeData( UserModel(id: "",  firstname: firstname.text, deviceToken:deviceId.text, phone:phone, amount: amount.text,country: countryName),context);
 
                       }
-                      if(codePhone==null){
-                        ToastHelper.showToast(msg: 'select-code'.tr(), backgroundColor: Colors.red);
-                      }
+
                     }, text: 'add'.tr())
               ],
             ),

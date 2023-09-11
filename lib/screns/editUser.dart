@@ -1,8 +1,10 @@
 
 import 'package:adminapplication/controller/user_provider.dart';
+import 'package:adminapplication/helper/app_size.dart';
 import 'package:adminapplication/model/user_model.dart';
 import 'package:adminapplication/widget/button_widget.dart';
 import 'package:adminapplication/widget/textFormField.dart';
+import 'package:country_picker/country_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,14 +27,14 @@ class _EditUserState extends State<EditUser> {
   TextEditingController telephone=TextEditingController();
   TextEditingController deviceId=TextEditingController();
   TextEditingController amount=TextEditingController();
+  String countryName="United State";
   @override
   Widget build(BuildContext context) {
     firstname.text=widget.user.firstname;
-    lastname.text=widget.user.lastname;
-    email.text=widget.user.email;
     telephone.text=widget.user.phone;
     deviceId.text=widget.user.deviceToken;
     amount.text=widget.user.amount;
+    countryName=widget.user.country;
 
     final UserProvider provider=Provider.of<UserProvider>(context);
     return Scaffold(
@@ -59,15 +61,76 @@ class _EditUserState extends State<EditUser> {
               SizedBox(height: 10,) ,
               Padding(
                 padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
-                child: Text('second-name'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,fontFamily: "Montserrat"),),
+                child: Text('country'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,fontFamily: "Montserrat"),),
               ),
-              CustomTextFormField(controller: lastname, hintText: 'second-name', prefixIcon: CupertinoIcons.padlock_solid, textInputType: TextInputType.text),
-              SizedBox(height: 10,) ,
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
-                child: Text('email'.tr(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,fontFamily: "Montserrat"),),
+              Container(
+                width: AppSize.width,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      color:   Color(0xff701B45),
+                    ),
+                    borderRadius: BorderRadius.circular(20)
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8.0,right: 8),
+                  child: Row(
+
+                    children: [
+                      const Icon(Icons.flag,color: Color(0xff701B45),),
+                      SizedBox(
+                        child: TextButton(
+                          onPressed: () {
+                            showCountryPicker(
+                              context: context,
+
+                              //Optional.  Can be used to exclude(remove) one ore more country from the countries list (optional).
+                              exclude: <String>['KN', 'MF'],
+                              favorite: <String>['SE'],
+                              //Optional. Shows phone code before the country name.
+                              showPhoneCode: true,
+                              onSelect: (Country country) {
+                                setState(() {
+
+
+                                  countryName=country.name;
+                                  widget.user.country=countryName;
+                                });
+
+                              },
+
+                              // Optional. Sets the theme for the country list picker.
+                              countryListTheme: CountryListThemeData(
+                                // Optional. Sets the border radius for the bottomsheet.
+                                borderRadius:const BorderRadius.only(
+                                  topLeft: Radius.circular(40.0),
+                                  topRight: Radius.circular(40.0),
+                                ),
+                                // Optional. Styles the search field.
+                                inputDecoration: InputDecoration(
+                                  labelText: 'search'.tr(),
+                                  hintText: 'start'.tr(),
+                                  prefixIcon: const Icon(Icons.search),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: const Color(0xFF8C98A8).withOpacity(0.2),
+                                    ),
+                                  ),
+                                ),
+                                // Optional. Styles the text in the search field
+                                searchTextStyle:const TextStyle(
+                                  color:  Color(0xff701B45),
+                                  fontSize: 18,
+                                ),
+                              ),
+                            );
+                          },
+                          child:  Text("${widget.user.country}",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,fontFamily: "Montserrat",color: Colors.black)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              CustomTextFormField(controller: email, hintText:'email'.tr(), prefixIcon: Icons.email, textInputType: TextInputType.emailAddress),
               SizedBox(height: 10,) ,
               Padding(
                 padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
@@ -93,7 +156,7 @@ class _EditUserState extends State<EditUser> {
 
               SizedBox(height:40,) ,
               DefaultButton(onPressed: (){
-                provider.editUser(UserModel(id: widget.user.id, email: email.text, firstname: firstname.text, deviceToken:deviceId.text, lastname: lastname.text, phone:telephone.text, amount: amount.text,authid:widget.user.authid ),context);
+                provider.editUser(UserModel(id: widget.user.id, firstname: firstname.text, deviceToken:deviceId.text, phone:telephone.text, amount: amount.text,country:widget.user.country ),context);
 
               //  provider.isDataStored(UserModel(id: widget.user.id, email: email.text, firstname: firstname.text, deviceToken:deviceId.text, lastname: lastname.text, phone:telephone.text, amount: amount.text));
               }, text:'save'.tr())

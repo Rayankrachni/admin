@@ -5,7 +5,7 @@
   "splash": "Splash Screen",
   "code-verification": "Otp Code Verification",
   "Home": "Accounts management",
-  "first-name": "First Name",
+  "first-name": "Full Name",
   "second-name": "Last Name",
   "email": "Email",
   "user-list": "Users List",
@@ -30,5 +30,8 @@
   "cancel": "Cancel",
   "delete": "Delete",
   "no-internet": "No network connection. Please check your connection.",
-  "item-delete": "item deleted successfully"
+  "item-delete": "item deleted successfully",
+  "country":"Country",
+  "search": "Search",
+  "start":"Start typing to search"
 }

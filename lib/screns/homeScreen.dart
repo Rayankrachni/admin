@@ -124,7 +124,7 @@ class _HomePageState extends State<HomePage>  with TickerProviderStateMixin {
                               ],
                             ),
 
-                            Divider(
+                            const Divider(
                                 indent: 10,
                                 endIndent: 10,
                                 thickness: 2,
@@ -150,7 +150,7 @@ class _HomePageState extends State<HomePage>  with TickerProviderStateMixin {
                                             context: context,
                                             builder: (BuildContext context) {
                                               return WrongDialog(onPressed: (){
-                                                userProvider.deleteItem(userList[index].id,userList[index].authid,context);
+                                                userProvider.deleteItem(userList[index].id,context);
                                                 //userProvider.deleteUserByUID(userList[index].authid);
                                               },);
 
@@ -170,9 +170,9 @@ class _HomePageState extends State<HomePage>  with TickerProviderStateMixin {
                                                 )
                                             ),
                                             child: ListTile(
-                                              subtitle: Text(" ${userList[index].phone } ",style: TextStyle(fontWeight: FontWeight.normal,color: Colors.grey,fontSize: 12,fontFamily: "Montserrat"),),
+                                              subtitle: Text(" ${userList[index].phone } ",style: TextStyle(fontWeight: FontWeight.normal,color: Colors.grey,fontSize: 12,fontFamily: "Montserrat",overflow: TextOverflow.ellipsis),),
 
-                                              title: Text(" ${userList[index].firstname}",style: TextStyle(fontWeight: FontWeight.w500,fontFamily: "Montserrat"),),
+                                              title: Text(" ${userList[index].firstname}",style: TextStyle(fontWeight: FontWeight.w500,fontFamily: "Montserrat",overflow: TextOverflow.ellipsis,fontSize: 13),),
                                               leading: Icon(CupertinoIcons.person,color: Color(0xff701B45),),
                                               trailing: IconButton(onPressed: (){
                                                 push(context: context, screen: EditUser(user:userList[index] ,));
